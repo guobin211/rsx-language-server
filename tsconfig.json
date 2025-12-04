@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "ignoreDeprecations": "5.0",
+        "declaration": true,
+        "isolatedModules": true,
+        "noImplicitAny": false,
+        "noUnusedParameters": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "allowJs": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "lib": ["WebWorker", "ESNext"],
+        "moduleResolution": "Node",
+        "esModuleInterop": false,
+        "outDir": "dist",
+        "noUnusedLocals": false
+    },
+    "include": ["src", "bin"]
+}
