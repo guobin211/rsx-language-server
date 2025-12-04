@@ -28,7 +28,10 @@
     "main": "index.js",
     "name": "rsx-language-server",
     "scripts": {
-        "build": "node build.mjs"
+        "build": "node build.mjs",
+        "test": "node --test tests/**/*.test.js",
+        "test:watch": "node --test --watch tests/**/*.test.js",
+        "test:summary": "node tests/test-summary.js"
     },
-    "version": "0.3.0"
+    "version": "0.3.1"
 }
