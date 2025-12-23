@@ -71,7 +71,7 @@ async function runTest(testFile) {
 
 async function main() {
     console.log('🧪 RSX Language Server Test Suite\n');
-    console.log('=' .repeat(60));
+    console.log('='.repeat(60));
     console.log('');
 
     const results = [];
@@ -80,7 +80,7 @@ async function main() {
 
     for (const testFile of testFiles) {
         process.stdout.write(`Running ${testDescriptions[testFile]}... `);
-        
+
         const result = await runTest(testFile);
         results.push(result);
 
@@ -95,18 +95,16 @@ async function main() {
     }
 
     console.log('');
-    console.log('=' .repeat(60));
+    console.log('='.repeat(60));
     console.log('\n📊 Test Summary:\n');
 
     for (const result of results) {
         const status = result.success ? '✅' : '❌';
-        const percentage = result.total > 0 
-            ? ((result.passed / result.total) * 100).toFixed(1) 
-            : '0.0';
-        
+        const percentage = result.total > 0 ? ((result.passed / result.total) * 100).toFixed(1) : '0.0';
+
         console.log(`${status} ${testDescriptions[result.file]}`);
         console.log(`   Passed: ${result.passed}/${result.total} (${percentage}%)`);
-        
+
         if (result.failed > 0) {
             console.log(`   Failed: ${result.failed}`);
         }
@@ -114,11 +112,9 @@ async function main() {
     }
 
     const totalTests = totalPassed + totalFailed;
-    const successRate = totalTests > 0 
-        ? ((totalPassed / totalTests) * 100).toFixed(1) 
-        : '0.0';
+    const successRate = totalTests > 0 ? ((totalPassed / totalTests) * 100).toFixed(1) : '0.0';
 
-    console.log('=' .repeat(60));
+    console.log('='.repeat(60));
     console.log(`\n🎯 Overall: ${totalPassed}/${totalTests} tests passed (${successRate}%)\n`);
 
     if (totalFailed === 0) {
@@ -130,7 +126,7 @@ async function main() {
     }
 }
 
-main().catch(err => {
+main().catch((err) => {
     console.error('Error running tests:', err);
     process.exit(1);
 });

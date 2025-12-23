@@ -20,10 +20,10 @@ describe('LSP Quick Check', () => {
 
     test('server can start and initialize', async () => {
         const result = await client.initialize();
-        
+
         assert.ok(result, 'Initialize result should exist');
         assert.ok(result.capabilities, 'Capabilities should exist');
-        
+
         console.log('\n✅ LSP Server is working!');
         console.log('\n📋 Supported capabilities:');
         console.log('  - Text Document Sync:', !!result.capabilities.textDocumentSync);
@@ -38,7 +38,7 @@ describe('LSP Quick Check', () => {
 
     test('server can handle document operations', async () => {
         await client.initialize();
-        
+
         const testFileUri = 'file:///test/quick.rsx';
         const content = `<script>
 export const message = "Hello, RSX!";
@@ -58,25 +58,25 @@ export const message = "Hello, RSX!";
 
         // Open document - this should not throw
         client.openDocument(testFileUri, 'rsx', 1, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('\n✅ Document operations working!');
         assert.ok(true, 'Document opened successfully');
     });
 
     test('server stays responsive', async () => {
         await client.initialize();
-        
+
         // Multiple operations
         for (let i = 0; i < 3; i++) {
             const uri = `file:///test/doc${i}.rsx`;
             const content = `<template><div>Test ${i}</div></template>`;
             client.openDocument(uri, 'rsx', i + 1, content);
         }
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('\n✅ Server remains responsive!');
         assert.ok(client.process, 'Server process still running');
     });

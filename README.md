@@ -8,7 +8,7 @@ This package provides a language server for the rsx language.
 
 ### 语言解析
 
-- 使用valor开发rsx语言的lsp服务
+- 使用volar开发rsx语言的lsp服务
 - ast解析采用tree-sitter-rsx
 - html部分使用volar-service-html
 - script部分使用volar-service-typescript

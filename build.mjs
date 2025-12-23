@@ -1,13 +1,7 @@
 import esbuild from 'esbuild';
 
 // Only exclude native modules and typescript (resolved at runtime)
-const external = [
-    'typescript',
-    'tree-sitter',
-    'tree-sitter-*',
-    'volar-service-*',
-    '@volar/*'
-];
+const external = ['typescript', 'tree-sitter', 'tree-sitter-*', 'volar-service-*', '@volar/*'];
 
 async function build() {
     /**

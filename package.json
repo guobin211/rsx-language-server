@@ -3,13 +3,14 @@
         "rsx-language-server": "bin/rsx-language-server.js"
     },
     "dependencies": {
-        "@volar/language-core": "^2.4.26",
-        "@volar/language-server": "^2.4.26",
-        "@volar/language-service": "^2.4.26",
-        "@volar/typescript": "~2.4.26",
-        "@volar/vscode": "^2.4.26",
+        "@volar/language-core": "^2.4.27",
+        "@volar/language-server": "^2.4.27",
+        "@volar/language-service": "^2.4.27",
+        "@volar/typescript": "~2.4.27",
+        "@volar/vscode": "^2.4.27",
         "fast-glob": "^3.3.3",
         "tree-sitter-rsx": "^0.2.0",
+        "typescript": "^5.9.3",
         "volar-service-css": "volar-2.4",
         "volar-service-emmet": "volar-2.4",
         "volar-service-html": "volar-2.4",
@@ -20,18 +21,23 @@
     },
     "description": "rsx language server",
     "devDependencies": {
-        "@types/node": "^22.19.1",
+        "@types/node": "^22.19.3",
         "esbuild": "^0.25.12",
-        "typescript": "^5.9.3"
+        "prettier": "^3.7.4"
     },
     "license": "MIT",
-    "main": "index.js",
+    "main": "dist/server.js",
+    "files": [
+        "dist",
+        "bin"
+    ],
     "name": "rsx-language-server",
     "scripts": {
         "build": "node build.mjs",
         "test": "node --test tests/**/*.test.js",
         "test:watch": "node --test --watch tests/**/*.test.js",
-        "test:summary": "node tests/test-summary.js"
+        "test:summary": "node tests/test-summary.js",
+        "fmt": "prettier --write 'src/**/*.{ts,js}'"
     },
-    "version": "0.3.1"
+    "version": "0.3.3"
 }

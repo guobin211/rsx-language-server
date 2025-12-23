@@ -12,6 +12,7 @@ class LSPClient {
         this.messageHandlers = new Map();
         this.nextId = 1;
         this.isInitialized = false;
+        this.cwd = process.cwd();
     }
 
     /**
@@ -20,7 +21,7 @@ class LSPClient {
     async start() {
         return new Promise((resolve, reject) => {
             this.process = spawn('node', [this.serverPath, '--stdio'], {
-                cwd: path.dirname(this.serverPath)
+                cwd: this.cwd,
             });
 
             this.process.stdout.on('data', (data) => {
@@ -56,7 +57,7 @@ class LSPClient {
 
             const header = this.messageBuffer.substring(0, headerEnd);
             const contentLengthMatch = header.match(/Content-Length: (\d+)/);
-            
+
             if (!contentLengthMatch) {
                 this.messageBuffer = this.messageBuffer.substring(headerEnd + 4);
                 continue;
@@ -168,7 +169,20 @@ class LSPClient {
                     formatting: {},
                     rangeFormatting: {},
                     semanticTokens: {
-                        tokenTypes: ['namespace', 'class', 'enum', 'interface', 'typeParameter', 'type', 'parameter', 'variable', 'property', 'enumMember', 'function', 'method'],
+                        tokenTypes: [
+                            'namespace',
+                            'class',
+                            'enum',
+                            'interface',
+                            'typeParameter',
+                            'type',
+                            'parameter',
+                            'variable',
+                            'property',
+                            'enumMember',
+                            'function',
+                            'method'
+                        ],
                         tokenModifiers: ['declaration', 'readonly', 'static', 'async', 'defaultLibrary', 'local'],
                         formats: ['relative']
                     }
@@ -269,7 +283,7 @@ class LSPClient {
             // Ignore shutdown errors
         }
         this.sendNotification('exit', null);
-        
+
         return new Promise((resolve) => {
             if (this.process) {
                 this.process.on('close', resolve);

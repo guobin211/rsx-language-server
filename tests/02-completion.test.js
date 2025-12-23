@@ -23,27 +23,25 @@ describe('LSP Completion Features', () => {
 
     test('should handle completion requests', async () => {
         const content = `<template>\n    {{\n</template>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 1, content);
-        
+
         // Wait a bit for the document to be processed
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         try {
             const result = await client.completion(testFileUri, { line: 1, character: 6 });
-            
+
             if (result && result.items) {
                 const items = result.items;
                 console.log(`✓ Received ${items.length} completion items`);
-                
+
                 // Check for common directives
-                const labels = items.map(item => item.label);
-                const hasDirectives = labels.some(label => 
-                    label.includes('@if') || 
-                    label.includes('@each') || 
-                    label.includes('@html')
+                const labels = items.map((item) => item.label);
+                const hasDirectives = labels.some(
+                    (label) => label.includes('@if') || label.includes('@each') || label.includes('@html')
                 );
-                
+
                 if (hasDirectives) {
                     console.log('✓ Found RSX directive completions');
                 }
@@ -54,32 +52,33 @@ describe('LSP Completion Features', () => {
             // Completion may not be available for this position
             console.log('✓ Completion request handled');
         }
-        
+
         assert.ok(true, 'Completion request completed without crash');
     });
 
     test('should handle section completions', async () => {
         const content = `\n`;
-        
+
         client.openDocument(testFileUri, 'rsx', 2, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         try {
             const result = await client.completion(testFileUri, { line: 0, character: 0 });
-            
+
             if (result && result.items) {
                 const items = result.items;
                 console.log(`✓ Received ${items.length} completion items at document start`);
-                
-                const labels = items.map(item => item.label);
-                const hasSections = labels.some(label => 
-                    label.includes('script') || 
-                    label.includes('template') || 
-                    label.includes('style') ||
-                    label === '---'
+
+                const labels = items.map((item) => item.label);
+                const hasSections = labels.some(
+                    (label) =>
+                        label.includes('script') ||
+                        label.includes('template') ||
+                        label.includes('style') ||
+                        label === '---'
                 );
-                
+
                 if (hasSections) {
                     console.log('✓ Found section completions');
                 }
@@ -89,23 +88,23 @@ describe('LSP Completion Features', () => {
         } catch (err) {
             console.log('✓ Section completion request handled');
         }
-        
+
         assert.ok(true, 'Section completion request completed without crash');
     });
 
     test('should handle @if directive completion', async () => {
         const content = `<template>\n    {{@\n</template>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 3, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         try {
             const result = await client.completion(testFileUri, { line: 1, character: 7 });
-            
+
             if (result && result.items) {
-                const ifItem = result.items.find(item => item.label === '{{@if}}');
-                
+                const ifItem = result.items.find((item) => item.label === '{{@if}}');
+
                 if (ifItem) {
                     assert.ok(ifItem.detail, 'Should have detail');
                     assert.ok(ifItem.insertText, 'Should have insert text');
@@ -119,7 +118,7 @@ describe('LSP Completion Features', () => {
         } catch (err) {
             console.log('✓ @if completion request handled');
         }
-        
+
         assert.ok(true, '@if completion request completed without crash');
     });
 
@@ -130,13 +129,13 @@ describe('LSP Completion Features', () => {
             { content: `<template>\n    {{@h\n</template>`, line: 1, char: 8, name: '@html' },
             { content: `\n`, line: 0, char: 0, name: 'sections' }
         ];
-        
+
         for (const scenario of scenarios) {
             const uri = `file:///test/completion-${scenario.name}.rsx`;
             client.openDocument(uri, 'rsx', 1, scenario.content);
-            
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
+
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
             try {
                 await client.completion(uri, { line: scenario.line, character: scenario.char });
                 console.log(`✓ ${scenario.name} completion handled`);
@@ -144,7 +143,7 @@ describe('LSP Completion Features', () => {
                 console.log(`✓ ${scenario.name} completion processed (no response)`);
             }
         }
-        
+
         assert.ok(true, 'Multiple completion scenarios handled without crash');
     });
 });

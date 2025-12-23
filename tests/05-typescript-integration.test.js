@@ -32,15 +32,15 @@ export const user: User = {
     name: "Alice"
 };
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 1, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         // Try to get completion for TypeScript
         try {
             const result = await client.completion(testFileUri, { line: 7, character: 10 });
-            
+
             if (result && result.items) {
                 console.log('✓ TypeScript completions available');
             }
@@ -57,15 +57,15 @@ export function add(a: number, b: number): number {
 
 export const result = add(1, 2);
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 2, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         // Try to get hover for type information
         try {
             const result = await client.hover(testFileUri, { line: 1, character: 15 });
-            
+
             if (result && result.contents) {
                 console.log('✓ Type information available');
             }
@@ -82,11 +82,11 @@ export const data = {
     count: 0
 };
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 3, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ TypeScript imports handled');
     });
 
@@ -101,11 +101,11 @@ export function createResponse<T>(data: T): Response<T> {
     return { data, status: 200 };
 }
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 4, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ Generic types handled');
     });
 
@@ -116,11 +116,11 @@ export async function fetchData(): Promise<any> {
     return response.json();
 }
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 5, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ Async/await syntax handled');
     });
 
@@ -134,11 +134,11 @@ enum Status {
 
 export const currentStatus: Status = Status.Active;
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 6, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ Enum declarations handled');
     });
 
@@ -156,11 +156,11 @@ export class UserService {
     }
 }
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 7, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ Class declarations handled');
     });
 
@@ -175,11 +175,11 @@ export class Model {
     id: number = 1;
 }
 </script>`;
-        
+
         client.openDocument(testFileUri, 'rsx', 8, content);
-        
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         console.log('✓ Decorators handled');
     });
 });

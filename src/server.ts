@@ -7,6 +7,7 @@ import { rsxLanguagePlugin } from './plugin';
 import { createRsxService } from './service';
 import { logger, LogLevel } from './logger';
 import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 logger.init(LogLevel.INFO);
 
@@ -21,12 +22,39 @@ connection.onInitialize((params) => {
         capabilities: Object.keys(params.capabilities)
     });
 
-    const tsdk = loadTsdkByPath(
-        params.initializationOptions?.typescript?.tsdk ?? path.dirname(require.resolve('typescript/lib/typescript.js')),
-        params.locale
-    );
+    function findProjectRoot(from: string) {
+        let dir = from;
+        while (true) {
+            if (fs.existsSync(path.join(dir, 'package.json'))) return dir;
+            const parent = path.dirname(dir);
+            if (parent === dir) break;
+            dir = parent;
+        }
+        return undefined;
+    }
 
-    logger.debug('TypeScript SDK loaded', { locale: params.locale });
+    const projectRoot = findProjectRoot(__dirname) ?? findProjectRoot(process.cwd());
+
+    let defaultTsdk: string;
+    if (projectRoot) {
+        try {
+            const tsResolvePath = require.resolve('typescript', { paths: [projectRoot] });
+            defaultTsdk = path.join(path.dirname(tsResolvePath));
+        } catch {
+            defaultTsdk = path.join(projectRoot, 'node_modules', 'typescript');
+        }
+    } else {
+        try {
+            const tsResolvePath = require.resolve('typescript');
+            defaultTsdk = path.join(path.dirname(tsResolvePath));
+        } catch {
+            defaultTsdk = path.join(process.cwd(), 'node_modules', 'typescript');
+        }
+    }
+
+    const tsdk = loadTsdkByPath(params.initializationOptions?.typescript?.tsdk ?? defaultTsdk, params.locale);
+
+    logger.info('TypeScript SDK loaded', { locale: params.locale, tsdk });
 
     const tsServices = createTypeScriptServices(tsdk.typescript, tsdk.diagnosticMessages);
 

@@ -25,7 +25,7 @@ async fn get_server_props(req: Request) -> Response {
 ---
 
 <script>
-    import { defineProps } from 'rsx';
+    import { defineProps } from 'rsx-core';
     // ssr components
     import Meta from '../components/meta.rsx';
     // csr components
